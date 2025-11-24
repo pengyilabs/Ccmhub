@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CCM HUB - Verify</title>
+    <link rel="stylesheet" href="../src/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body class="bg-[#f7f8fc] flex items-center justify-center min-h-screen px-4 py-8 text-[#1f1f1f]" data-page="verification">
+    <div class="w-full max-w-md flex flex-col items-center gap-8">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-14 h-14 bg-[#FDD42B] rounded-xl flex items-center justify-center shadow-lg">
+          <span class="text-gray-900 font-bold text-xl">C</span>
+        </div>
+        <h1 class="text-xl font-semibold text-gray-900">CCM HUB</h1>
+        <div class="w-12 h-12 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-500 shadow-sm">
+          <i class="fa-regular fa-envelope text-xl"></i>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold text-gray-900">Verify your email</h2>
+        <p class="text-gray-600 mt-2">We sent a verification code to</p>
+        <p id="verification-email-label" class="text-gray-900 font-semibold">user@example.com</p>
+      </div>
+
+      <div class="w-full bg-white border border-gray-200 rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-6">
+        <div class="w-full text-center">
+          <p class="text-sm font-medium text-gray-800">Enter verification code</p>
+        </div>
+        <form id="verification-form" class="w-full space-y-6">
+          <div class="flex justify-center gap-3">
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 1" />
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 2" />
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 3" />
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 4" />
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 5" />
+            <input type="text" inputmode="numeric" maxlength="1" class="otp-box w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-semibold focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" aria-label="Code digit 6" />
+          </div>
+          <button id="verify-btn" type="submit" class="w-full h-11 rounded-md bg-gray-200 text-gray-500 font-semibold cursor-not-allowed">Verify email</button>
+        </form>
+        <div class="text-center text-sm text-gray-700">
+          <p class="mb-1">Didn't receive the code?</p>
+          <button type="button" class="font-semibold text-gray-900 hover:underline">Resend code</button>
+        </div>
+      </div>
+
+      <button id="back-to-register" class="text-sm text-gray-700 hover:underline flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left text-xs"></i> Back to registration
+      </button>
+    </div>
+    <script src="../scripts/state.js"></script>
+    <script src="../scripts/render.js"></script>
+    <script src="../scripts/notifications.js"></script>
+    <script src="../scripts/app.js"></script>
+  </body>
+</html>
