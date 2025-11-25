@@ -1,51 +1,35 @@
 // Page wiring for CCM HUB static prototype
 (function () {
   const { loadState, saveState, seedOutlets, updateUserLabels, defaultState } = window.CCMState;
-  const { renderDashboard, renderOutletsGrid, renderOutletDetails, renderCalculations, renderPerformance } = window.CCMRender;
+  const { renderDashboard, renderOutletsGrid, renderOutletDetails, renderCalculations, renderPerformance, renderHelpFaq } = window.CCMRender;
   const { init: initNotifications } = window.CCMNotifications;
 
-  function wireSearch(state) {
-    const input = document.getElementById("search-input");
-    if (!input) return;
-    input.addEventListener("input", (e) => {
-      const term = e.target.value.toLowerCase();
-      if (!term) {
-        renderOutletsGrid(state);
-        return;
-      }
-      const filtered = state.outlets.filter(
-        (o) =>
-          o.name.toLowerCase().includes(term) ||
-          o.address.toLowerCase().includes(term) ||
-          o.campaign.toLowerCase().includes(term)
-      );
-      const grid = document.getElementById("outlet-grid");
-      if (!grid) return;
-      grid.innerHTML = "";
-      filtered.forEach((outlet) => {
-        const card = document.createElement("article");
-        card.className = "bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex flex-col gap-3";
-        card.innerHTML = `
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="text-sm text-gray-500">Outlet</p>
-              <h3 class="text-lg font-semibold text-gray-900">${outlet.name}</h3>
-              <p class="text-sm text-gray-500">${outlet.address}</p>
-            </div>
-            <span class="px-3 py-1 rounded-full bg-[#FDD42B] text-gray-900 text-xs font-semibold shadow-sm">${outlet.campaign}</span>
-          </div>
-          <div class="flex items-center justify-between text-sm text-gray-600">
-            <span>Reports: ${4 + Math.floor(Math.random() * 4)}</span>
-            <span class="text-green-600 font-semibold">Active</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <a class="text-sm font-semibold text-gray-900 hover:underline" href="outlet-details.html?id=${outlet.id}">View details</a>
-            <button class="text-sm text-gray-600 hover:underline" type="button">Download report</button>
-          </div>
-        `;
-        grid.appendChild(card);
+  function wireSearch(state, page) {
+    const headerInput = document.getElementById("search-input");
+    const outletSearch = document.getElementById("outlet-search");
+    const calcSearch = document.getElementById("calc-search");
+
+    const handleOutletsFilter = () => {
+      const term = (outletSearch?.value || headerInput?.value || "").toLowerCase();
+      renderOutletsGrid(state, term);
+    };
+
+    const handleCalculationsFilter = () => {
+      const term = (calcSearch?.value || headerInput?.value || "").toLowerCase();
+      renderCalculations(state, term);
+    };
+
+    if (page === "outlets") {
+      [headerInput, outletSearch].forEach((input) => {
+        if (input) input.addEventListener("input", handleOutletsFilter);
       });
-    });
+    }
+
+    if (page === "calculations") {
+      [headerInput, calcSearch].forEach((input) => {
+        if (input) input.addEventListener("input", handleCalculationsFilter);
+      });
+    }
   }
 
   function wireModal(state) {
@@ -88,12 +72,34 @@
         modal.classList.add("hidden");
         modal.style.display = "none";
         form.reset();
+        const filterTerm = (document.getElementById("outlet-search")?.value || document.getElementById("search-input")?.value || "").toLowerCase();
         renderDashboard(state);
-        renderOutletsGrid(state);
+        renderOutletsGrid(state, filterTerm);
         renderCalculations(state);
         renderPerformance(state);
       });
     }
+  }
+
+  function wireCalculationActions(state) {
+    const table = document.getElementById("calc-table-body");
+    const searchField = document.getElementById("calc-search");
+    if (!table) return;
+
+    const applyFilter = () => {
+      const term = (searchField?.value || document.getElementById("search-input")?.value || "").toLowerCase();
+      renderCalculations(state, term);
+    };
+
+    table.addEventListener("click", (e) => {
+      const deleteBtn = e.target.closest("[data-delete-calc]");
+      if (deleteBtn) {
+        const id = deleteBtn.dataset.deleteCalc;
+        state.calculations = state.calculations.filter((calc) => calc.id !== id);
+        saveState(state);
+        applyFilter();
+      }
+    });
   }
 
   function wireLogout(state) {
@@ -103,6 +109,10 @@
       saveState({ ...defaultState });
       window.location.href = "index.html";
     });
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }
 
   function wireSettings(state) {
@@ -115,6 +125,57 @@
         alertsBtn.classList.toggle("bg-gray-200", state.alertsEnabled);
         alertsBtn.classList.toggle("bg-gray-300", !state.alertsEnabled);
       });
+    }
+
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeTrack = themeToggle ? themeToggle.nextElementSibling : null;
+    if (themeToggle) {
+      const syncToggle = () => {
+        themeToggle.checked = state.theme === "dark";
+        if (themeTrack) {
+          themeTrack.classList.toggle("is-on", themeToggle.checked);
+        }
+      };
+      syncToggle();
+      themeToggle.addEventListener("change", () => {
+        state.theme = themeToggle.checked ? "dark" : "light";
+        applyTheme(state.theme);
+        saveState(state);
+        syncToggle();
+      });
+      themeToggle.addEventListener("click", () => {
+        themeToggle.blur();
+      });
+    }
+
+    document.querySelectorAll("[data-toggle-track]").forEach((input) => {
+      const track = input.nextElementSibling;
+      const sync = () => track?.classList.toggle("is-on", input.checked);
+      sync();
+      input.addEventListener("change", sync);
+      input.addEventListener("click", () => input.blur());
+    });
+
+    const tabButtons = Array.from(document.querySelectorAll("[data-tab-btn]"));
+    const panels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+    if (tabButtons.length && panels.length) {
+      const setActiveTab = (key) => {
+        tabButtons.forEach((btn) => {
+          const isActive = btn.dataset.tabBtn === key;
+          btn.classList.toggle("text-gray-900", isActive);
+          btn.classList.toggle("text-gray-500", !isActive);
+          btn.classList.toggle("border-b-2", isActive);
+          btn.classList.toggle("border-[#FDD42B]", isActive);
+          btn.classList.toggle("border-transparent", !isActive);
+        });
+        panels.forEach((panel) => {
+          panel.hidden = panel.dataset.tabPanel !== key;
+        });
+      };
+      setActiveTab("general");
+      tabButtons.forEach((btn) =>
+        btn.addEventListener("click", () => setActiveTab(btn.dataset.tabBtn))
+      );
     }
   }
 
@@ -141,6 +202,33 @@
         window.location.href = "dashboard.html";
       });
     });
+  }
+
+  function wirePerformanceView(state) {
+    const cardsBtn = document.getElementById("performance-cards-btn");
+    const tableBtn = document.getElementById("performance-table-btn");
+    if (!cardsBtn || !tableBtn) return;
+
+    const setActive = (mode) => {
+      const activeClasses = ["bg-[#FDD42B]", "text-gray-900", "border", "border-[#e6c11f]"];
+      const inactiveClasses = ["bg-white", "text-gray-800", "border", "border-gray-200"];
+
+      if (mode === "cards") {
+        cardsBtn.classList.add(...activeClasses);
+        cardsBtn.classList.remove(...inactiveClasses);
+        tableBtn.classList.add(...inactiveClasses);
+        tableBtn.classList.remove(...activeClasses);
+      } else {
+        tableBtn.classList.add(...activeClasses);
+        tableBtn.classList.remove(...inactiveClasses);
+        cardsBtn.classList.add(...inactiveClasses);
+        cardsBtn.classList.remove(...activeClasses);
+      }
+      renderPerformance(state, mode);
+    };
+
+    cardsBtn.addEventListener("click", () => setActive("cards"));
+    tableBtn.addEventListener("click", () => setActive("table"));
   }
 
   function initRegister() {
@@ -224,16 +312,24 @@
   function initAppPages(page) {
     const state = seedOutlets(loadState());
     saveState(state);
+    applyTheme(state.theme);
     updateUserLabels(state);
     wireLogout(state);
     wireModal(state);
     wireSettings(state);
-    wireSearch(state);
+    wireSearch(state, page);
     if (page === "dashboard") renderDashboard(state);
     if (page === "outlets") renderOutletsGrid(state);
     if (page === "outlet-details") renderOutletDetails(state);
-    if (page === "calculations") renderCalculations(state);
-    if (page === "performance") renderPerformance(state);
+    if (page === "calculations") {
+      renderCalculations(state);
+      wireCalculationActions(state);
+    }
+    if (page === "help") renderHelpFaq();
+    if (page === "performance") {
+      renderPerformance(state);
+      wirePerformanceView(state);
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {

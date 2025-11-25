@@ -9,7 +9,7 @@
   </head>
   <body class="bg-[#f7f8fc] min-h-screen text-[#1f1f1f] overflow-x-hidden" data-page="help">
     <div class="flex min-h-screen w-screen">
-      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen sticky top-0">
+      <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div class="h-16 px-6 border-b border-gray-200 flex items-center gap-3">
           <div class="w-10 h-10 bg-[#FDD42B] rounded-lg flex items-center justify-center">
             <span class="text-gray-900 font-semibold text-xl">C</span>
@@ -31,49 +31,45 @@
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
             <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-4">
             <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
               <i class="fa-regular fa-bell"></i>
+              <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#FDD42B] text-[11px] font-semibold text-gray-900 flex items-center justify-center border border-[#e6c11f]">3</span>
             </button>
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">G</div>
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">JD</div>
           </div>
         </header>
 
-        <div class="p-8 space-y-6 max-w-6xl w-full mx-auto">
-          <div>
-            <p class="text-sm text-gray-500">Help</p>
-            <h2 class="text-xl font-semibold text-gray-900">Quick answers</h2>
+        <section class="p-8 space-y-8 max-w-6xl w-full mx-auto">
+          <div class="space-y-1">
+            <h1 class="text-2xl font-semibold text-gray-900">Help Center</h1>
+            <p class="text-sm text-gray-600">Find answers to common questions and learn how to use CCM HUB</p>
           </div>
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
-            <details class="group border border-gray-200 rounded-xl p-4">
-              <summary class="flex items-center justify-between cursor-pointer text-gray-900 font-semibold">
-                How do I add an outlet?
-                <span class="text-gray-500 group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p class="text-sm text-gray-600 mt-3">Use the “New outlet” button in the top bar. Fill in campaign and address, then save.</p>
-            </details>
-            <details class="group border border-gray-200 rounded-xl p-4">
-              <summary class="flex items-center justify-between cursor-pointer text-gray-900 font-semibold">
-                Can I switch campaigns?
-                <span class="text-gray-500 group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p class="text-sm text-gray-600 mt-3">Yes. Edit an outlet and update the campaign name to reassign reports.</p>
-            </details>
-            <details class="group border border-gray-200 rounded-xl p-4">
-              <summary class="flex items-center justify-between cursor-pointer text-gray-900 font-semibold">
-                How do I export reports?
-                <span class="text-gray-500 group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p class="text-sm text-gray-600 mt-3">Use the “Download report” action inside an outlet card or detail view.</p>
-            </details>
+
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-lg bg-[#FDD42B] flex items-center justify-center text-gray-900 text-xl font-bold">?</div>
+            <div class="flex-1 space-y-1">
+              <h3 class="text-lg font-semibold text-gray-900">Need More Help?</h3>
+              <p class="text-sm text-gray-600">Can’t find what you’re looking for? Our support team is here to help you.</p>
+            </div>
+            <button class="px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">Contact Support</button>
           </div>
-        </div>
+
+          <div class="bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-100">
+              <h3 class="text-lg font-semibold text-gray-900">Frequently Asked Questions</h3>
+            </div>
+            <div id="faq-list" class="divide-y divide-gray-100 text-sm text-gray-800">
+              <!-- FAQ items injected by JS -->
+            </div>
+          </div>
+        </section>
       </main>
     </div>
     <script src="../scripts/state.js"></script>

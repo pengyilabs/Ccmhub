@@ -9,7 +9,7 @@
   </head>
   <body class="bg-[#f7f8fc] min-h-screen text-[#1f1f1f] overflow-x-hidden" data-page="performance">
     <div class="flex min-h-screen w-screen">
-      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen sticky top-0">
+      <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div class="h-16 px-6 border-b border-gray-200 flex items-center gap-3">
           <div class="w-10 h-10 bg-[#FDD42B] rounded-lg flex items-center justify-center">
             <span class="text-gray-900 font-semibold text-xl">C</span>
@@ -31,35 +31,82 @@
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <div class="relative">
-              <input id="search-input" type="search" placeholder="Search outlets..." class="h-10 w-64 pl-10 pr-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FDD42B]" />
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">⌕</span>
-            </div>
+          <div class="relative w-full max-w-3xl">
+            <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           </div>
           <div class="flex items-center gap-4">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-gray-900" id="user-name-label">Guest</p>
-              <p class="text-xs text-gray-500" id="user-email-label">guest@example.com</p>
-            </div>
             <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
               <i class="fa-regular fa-bell"></i>
+              <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#FDD42B] text-[11px] font-semibold text-gray-900 flex items-center justify-center border border-[#e6c11f]">3</span>
             </button>
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">G</div>
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">JD</div>
           </div>
         </header>
 
-        <div class="p-8 space-y-6 max-w-6xl w-full mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Performance</p>
-              <h2 class="text-xl font-semibold text-gray-900">Status by outlet</h2>
+        <section class="p-8 space-y-6 max-w-6xl w-full mx-auto">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+              <h1 class="text-2xl font-semibold text-gray-900">Outlet Performance</h1>
+              <p class="text-sm text-gray-600">Service: DCE</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <select class="h-10 px-3 border border-gray-200 rounded-md bg-white text-sm text-gray-800 focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
+                <option>DCE</option>
+              </select>
+              <input type="text" placeholder="2024-11-01" class="h-10 px-3 border border-gray-200 rounded-md bg-white text-sm text-gray-800 focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B] w-36" />
+              <span class="text-gray-500 text-sm">to</span>
+              <input type="text" placeholder="2024-11-30" class="h-10 px-3 border border-gray-200 rounded-md bg-white text-sm text-gray-800 focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B] w-36" />
+              <button class="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white hover:bg-gray-50">
+                <i class="fa-solid fa-arrow-up-from-bracket text-gray-600"></i>
+                Export Report
+              </button>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="performance-cards"></div>
-        </div>
+
+          <div
+            id="performance-summary"
+            class="grid gap-4"
+            style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"
+          ></div>
+
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+            <div class="px-6 py-4 flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-900">Performance Details</h3>
+              <div class="flex items-center gap-2">
+                <button id="performance-cards-btn" class="px-3 h-9 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] inline-flex items-center gap-2">
+                  <i class="fa-solid fa-table-cells-large"></i> Cards
+                </button>
+                <button id="performance-table-btn" class="px-3 h-9 rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white inline-flex items-center gap-2">
+                  <i class="fa-regular fa-rectangle-list"></i> Table
+                </button>
+              </div>
+            </div>
+            <div class="px-6 pb-6 space-y-4">
+              <div
+                id="performance-details-cards"
+                class="grid gap-4"
+                style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));"
+              ></div>
+              <div id="performance-details-table" class="hidden overflow-x-auto bg-white border border-gray-200 rounded-xl">
+                <table class="min-w-full text-sm">
+                  <thead class="bg-gray-50 text-gray-600 border-b border-gray-100">
+                    <tr class="text-left">
+                      <th class="px-6 py-3 font-semibold">Outlet</th>
+                      <th class="px-6 py-3 font-semibold">Subscribers</th>
+                      <th class="px-6 py-3 font-semibold">Redeemers</th>
+                      <th class="px-6 py-3 font-semibold">Review Clicks</th>
+                      <th class="px-6 py-3 font-semibold text-right">% Ratio</th>
+                    </tr>
+                  </thead>
+                  <tbody id="performance-table-body" class="text-gray-800"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
     <script src="../scripts/state.js"></script>

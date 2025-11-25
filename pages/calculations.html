@@ -9,7 +9,7 @@
   </head>
   <body class="bg-[#f7f8fc] min-h-screen text-[#1f1f1f] overflow-x-hidden" data-page="calculations">
     <div class="flex min-h-screen w-screen">
-      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen sticky top-0">
+      <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div class="h-16 px-6 border-b border-gray-200 flex items-center gap-3">
           <div class="w-10 h-10 bg-[#FDD42B] rounded-lg flex items-center justify-center">
             <span class="text-gray-900 font-semibold text-xl">C</span>
@@ -31,46 +31,77 @@
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <div class="relative">
-              <input id="search-input" type="search" placeholder="Search outlets..." class="h-10 w-64 pl-10 pr-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FDD42B]" />
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">⌕</span>
-            </div>
+          <div class="relative w-full max-w-3xl">
+            <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           </div>
           <div class="flex items-center gap-4">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-gray-900" id="user-name-label">Guest</p>
-              <p class="text-xs text-gray-500" id="user-email-label">guest@example.com</p>
-            </div>
             <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
               <i class="fa-regular fa-bell"></i>
+              <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#FDD42B] text-[11px] font-semibold text-gray-900 flex items-center justify-center border border-[#e6c11f]">3</span>
             </button>
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">G</div>
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">JD</div>
           </div>
         </header>
 
-        <div class="p-8 space-y-6 max-w-6xl w-full mx-auto">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-500">Calculations</p>
-              <h2 class="text-xl font-semibold text-gray-900">Recent savings</h2>
-            </div>
+        <section class="p-8 space-y-6 max-w-6xl w-full mx-auto">
+          <div class="space-y-1">
+            <h1 class="text-2xl font-semibold text-gray-900">Calculations</h1>
+            <p class="text-sm text-gray-600">Manage and view all your inventory calculations.</p>
           </div>
-          <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="px-6 py-3 border-b border-gray-200 text-sm text-gray-500">Sample data</div>
-            <div class="divide-y divide-gray-100">
-              <div class="grid grid-cols-4 text-sm font-semibold text-gray-500 px-6 py-3 bg-gray-50">
-                <span>Outlet</span>
-                <span>Campaign</span>
-                <span>Type</span>
-                <span class="text-right">Impact</span>
+
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="relative w-full sm:w-64">
+                <input id="calc-search" type="search" placeholder="Search calculations..." class="w-full h-10 pl-10 pr-3 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
               </div>
-              <div id="calc-rows"></div>
+              <button class="inline-flex items-center gap-2 px-3 h-10 rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white hover:bg-gray-50">
+                <i class="fa-solid fa-filter text-gray-600"></i>
+                Filter by
+                <i class="fa-solid fa-chevron-down text-[11px] text-gray-500"></i>
+              </button>
+            </div>
+            <button class="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+              <i class="fa-solid fa-plus"></i>
+              New Calculation
+            </button>
+          </div>
+
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="bg-white text-gray-500">
+                  <tr class="text-left border-b border-gray-100">
+                    <th class="px-6 py-3 font-semibold">ID Number</th>
+                    <th class="px-6 py-3 font-semibold">Creation Date</th>
+                    <th class="px-6 py-3 font-semibold">Number of Articles</th>
+                    <th class="px-6 py-3 font-semibold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="calc-table-body" class="text-gray-800">
+                  <tr>
+                    <td colspan="4" class="px-6 py-6 text-center text-gray-500">Loading calculations...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="px-6 py-3 border-t border-gray-100 text-xs text-gray-500 flex items-center justify-between">
+              <span id="calc-count-label">Showing 0 calculations</span>
+              <div class="flex items-center gap-2">
+                <button class="w-8 h-8 rounded-md border border-gray-200 text-gray-500 bg-white hover:bg-gray-50" aria-label="Previous page">
+                  <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button class="min-w-[32px] h-8 rounded-md bg-[#FDD42B] text-gray-900 font-semibold border border-[#e6c11f]" aria-label="Current page">1</button>
+                <button class="w-8 h-8 rounded-md border border-gray-200 text-gray-500 bg-white hover:bg-gray-50" aria-label="Next page">
+                  <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
     <script src="../scripts/state.js"></script>

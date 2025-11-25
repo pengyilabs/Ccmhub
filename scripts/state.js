@@ -5,6 +5,12 @@
   const defaultState = {
     user: { name: "Guest", email: "guest@example.com" },
     outlets: [],
+    theme: "light",
+    calculations: [
+      { id: "CALC-001", createdAt: "2024-11-05", articles: 12 },
+      { id: "CALC-002", createdAt: "2024-11-08", articles: 8 },
+      { id: "CALC-003", createdAt: "2024-11-10", articles: 15 },
+    ],
     alertsEnabled: true,
   };
 
@@ -13,7 +19,13 @@
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return { ...defaultState };
       const parsed = JSON.parse(stored);
-      return { ...defaultState, ...parsed, outlets: parsed.outlets || [] };
+      return {
+        ...defaultState,
+        ...parsed,
+        outlets: parsed.outlets || [],
+        calculations: Array.isArray(parsed.calculations) ? parsed.calculations : defaultState.calculations,
+        theme: parsed.theme || defaultState.theme,
+      };
     } catch {
       return { ...defaultState };
     }

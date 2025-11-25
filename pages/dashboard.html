@@ -9,7 +9,7 @@
   </head>
   <body class="bg-[#f7f8fc] min-h-screen text-[#1f1f1f] overflow-x-hidden" data-page="dashboard">
     <div class="flex min-h-screen w-screen">
-      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen sticky top-0">
+      <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div class="h-16 px-6 border-b border-gray-200 flex items-center gap-3">
           <div class="w-10 h-10 bg-[#FDD42B] rounded-lg flex items-center justify-center">
             <span class="text-gray-900 font-semibold text-xl">C</span>
@@ -39,7 +39,7 @@
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
             <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
@@ -62,7 +62,10 @@
             <div class="hidden"></div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div
+            class="grid gap-4"
+            style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"
+          >
             <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center gap-3">
               <div class="w-11 h-11 rounded-lg bg-yellow-50 border border-yellow-100 flex items-center justify-center text-yellow-500">
                 <i class="fa-regular fa-file-lines"></i>

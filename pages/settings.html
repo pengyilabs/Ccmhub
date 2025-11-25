@@ -9,7 +9,7 @@
   </head>
   <body class="bg-[#f7f8fc] min-h-screen text-[#1f1f1f] overflow-x-hidden" data-page="settings">
     <div class="flex min-h-screen w-screen">
-      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col min-h-screen sticky top-0">
+      <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
         <div class="h-16 px-6 border-b border-gray-200 flex items-center gap-3">
           <div class="w-10 h-10 bg-[#FDD42B] rounded-lg flex items-center justify-center">
             <span class="text-gray-900 font-semibold text-xl">C</span>
@@ -31,7 +31,7 @@
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
             <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
@@ -54,44 +54,216 @@
           <div class="bg-white border border-gray-200 rounded-2xl shadow-sm">
             <div class="border-b border-gray-200 px-6 pt-4">
               <div class="flex gap-8 text-sm font-semibold text-gray-600">
-                <button class="py-3 text-gray-500 hover:text-gray-700">General</button>
-                <button class="py-3 text-gray-500 hover:text-gray-700">Users & Roles</button>
-                <button class="py-3 border-b-2 border-[#FDD42B] text-gray-900">Notifications</button>
+                <button data-tab-btn="general" class="py-3 text-gray-500 hover:text-gray-700 border-b-2 border-transparent">General</button>
+                <button data-tab-btn="users" class="py-3 text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Users & Roles</button>
+                <button data-tab-btn="notifications" class="py-3 border-b-2 border-[#FDD42B] text-gray-900">Notifications</button>
               </div>
             </div>
 
             <div class="p-6 space-y-6">
-              <div class="space-y-6">
+              <div data-tab-panel="general" class="space-y-8">
+                <h3 class="text-lg font-semibold text-gray-900">General Settings</h3>
+
+                <div class="space-y-6">
+                  <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-900">Language</label>
+                    <select class="w-full sm:w-72 h-10 border border-gray-300 rounded-md bg-white px-3 text-sm focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
+                      <option>English</option>
+                      <option>German</option>
+                      <option>Spanish</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-900">Time Zone</label>
+                    <select class="w-full sm:w-72 h-10 border border-gray-300 rounded-md bg-white px-3 text-sm focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
+                      <option>Europe/Berlin</option>
+                      <option>UTC</option>
+                      <option>America/New_York</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-3">
+                    <p class="text-sm font-semibold text-gray-900">Date & Number Format</p>
+                    <label class="flex items-center gap-2 text-sm text-gray-800">
+                      <input type="radio" name="date-format" class="accent-[#FDD42B]" checked />
+                      DD/MM/YYYY
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-800">
+                      <input type="radio" name="date-format" class="accent-[#FDD42B]" />
+                      MM/DD/YYYY
+                    </label>
+                  </div>
+
+                  <div class="border-t border-gray-200 pt-6 flex items-center justify-between">
+                    <div class="space-y-1">
+                      <p class="text-sm font-semibold text-gray-900">Theme</p>
+                      <p class="text-xs text-gray-600">Switch between light and dark mode</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-gray-700">
+                      <span>Light</span>
+                      <label class="inline-flex items-center cursor-pointer">
+                        <input id="theme-toggle" type="checkbox" class="sr-only" />
+                        <div class="theme-toggle">
+                          <div class="theme-thumb"></div>
+                        </div>
+                      </label>
+                      <span>Dark</span>
+                    </div>
+                  </div>
+
+                  <div class="border-t border-gray-200 pt-6 space-y-2">
+                    <p class="text-sm font-semibold text-gray-900">Brand / Campaign Association</p>
+                    <p class="text-xs text-gray-600">Choose default brand for your campaigns</p>
+                    <select class="w-full sm:w-72 h-10 border border-gray-300 rounded-md bg-white px-3 text-sm focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
+                      <option>Campari</option>
+                      <option>Aperol</option>
+                      <option>Wild Turkey</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div data-tab-panel="users" class="space-y-4" hidden>
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Users & Roles</h3>
+                    <p class="text-sm text-gray-600">Roles define user permissions across Outlets, Services, and Calculations.</p>
+                  </div>
+                  <button class="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+                    <i class="fa-regular fa-user-plus"></i>
+                    Add New User
+                  </button>
+                </div>
+
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                  <table class="min-w-full text-sm text-gray-800">
+                    <thead class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                      <tr class="text-left">
+                        <th class="px-6 py-3 font-semibold">Name</th>
+                        <th class="px-6 py-3 font-semibold">Email</th>
+                        <th class="px-6 py-3 font-semibold">Role</th>
+                        <th class="px-6 py-3 font-semibold">Status</th>
+                        <th class="px-6 py-3 font-semibold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                      <tr class="align-middle">
+                        <td class="px-6 py-4 font-semibold">John Smith</td>
+                        <td class="px-6 py-4">john.smith@ccmhub.com</td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Admin</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Active</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <div class="flex items-center justify-end gap-2">
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="align-middle">
+                        <td class="px-6 py-4 font-semibold">Sarah Johnson</td>
+                        <td class="px-6 py-4">sarah.j@ccmhub.com</td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Manager</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Active</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <div class="flex items-center justify-end gap-2">
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="align-middle">
+                        <td class="px-6 py-4 font-semibold">Michael Brown</td>
+                        <td class="px-6 py-4">m.brown@ccmhub.com</td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800">Viewer</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700">Inactive</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <div class="flex items-center justify-end gap-2">
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr class="align-middle">
+                        <td class="px-6 py-4 font-semibold">Emma Wilson</td>
+                        <td class="px-6 py-4">emma.w@ccmhub.com</td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Manager</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Active</span>
+                        </td>
+                        <td class="px-6 py-4">
+                          <div class="flex items-center justify-end gap-2">
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="w-9 h-9 border border-gray-200 rounded-md bg-white hover:bg-gray-50 text-gray-600">
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div data-tab-panel="notifications" class="space-y-6">
                 <h3 class="text-lg font-semibold text-gray-900">Notification Preferences</h3>
                 <p class="text-sm text-gray-600">Configure how you want to receive alerts and updates</p>
 
-                <div class="flex items-center justify-between py-3 border-b border-gray-200">
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
                   <div>
                     <p class="text-sm font-semibold text-gray-900">Email Notifications</p>
                     <p class="text-xs text-gray-600">Receive notifications via email</p>
                   </div>
                   <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" class="sr-only peer" checked />
-                    <div class="relative w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#FDD42B] transition-colors">
-                      <div class="absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                    <input id="notif-email-toggle" data-toggle-track type="checkbox" class="sr-only" checked />
+                    <div class="theme-toggle is-on">
+                      <div class="theme-thumb"></div>
                     </div>
                   </label>
                 </div>
 
-                <div class="flex items-center justify-between py-3 border-b border-gray-200">
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
                   <div>
                     <p class="text-sm font-semibold text-gray-900">In-app Notifications</p>
                     <p class="text-xs text-gray-600">Show notifications within the application</p>
                   </div>
                   <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" class="sr-only peer" checked />
-                    <div class="relative w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#FDD42B] transition-colors">
-                      <div class="absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                    <input id="notif-inapp-toggle" data-toggle-track type="checkbox" class="sr-only" checked />
+                    <div class="theme-toggle is-on">
+                      <div class="theme-thumb"></div>
                     </div>
                   </label>
                 </div>
 
-                <div class="space-y-3 border-b border-gray-200 pb-3">
+                <div class="space-y-3 border-b border-gray-200 pb-4">
                   <p class="text-sm font-semibold text-gray-900">Notification Categories</p>
                   <div class="flex flex-col gap-2 text-sm text-gray-800">
                     <label class="flex items-center gap-2">
@@ -115,7 +287,7 @@
 
                 <div class="space-y-2">
                   <label class="text-sm font-semibold text-gray-900">Delivery Frequency</label>
-                  <select class="w-full h-10 border border-gray-300 rounded-md bg-white px-3 text-sm focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
+                  <select class="w-full sm:w-64 h-10 border border-gray-300 rounded-md bg-white px-3 text-sm focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]">
                     <option>Immediate</option>
                     <option>Hourly</option>
                     <option>Daily</option>
@@ -132,7 +304,7 @@
 
               <div class="flex items-center justify-between pt-4 border-t border-gray-200">
                 <button class="px-4 h-10 rounded-md border border-gray-300 bg-white text-gray-800 text-sm font-semibold">Cancel</button>
-                <button class="px-4 h-10 rounded-md bg-[#FDD42B] text-gray-900 text-sm font-semibold border border-[#e6c11f]">Save Changes</button>
+                <button class="px-4 h-10 rounded-md bg-[#FDD42B] text-gray-900 text-sm font-semibold border border-[#e6c11f]">Save Preferences</button>
               </div>
             </div>
           </div>
