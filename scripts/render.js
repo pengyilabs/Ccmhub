@@ -6,18 +6,88 @@
     const statServices = document.getElementById("stat-services");
     const statReports = document.getElementById("stat-reports");
     const statCalcs = document.getElementById("stat-calcs");
+    const statOutletsSub = document.getElementById("stat-outlets-sub");
+    const statServicesSub = document.getElementById("stat-services-sub");
+    const statReportsSub = document.getElementById("stat-reports-sub");
+    const statCalcsSub = document.getElementById("stat-calcs-sub");
+    const heroTitle = document.getElementById("dashboard-title");
+    const heroSubtitle = document.getElementById("dashboard-subtitle");
+    const viewAllBtn = document.getElementById("dashboard-view-all");
+    const openCalcsBtn = document.getElementById("dashboard-open-calcs");
+    const iconOutlets = document.getElementById("stat-card-outlets-icon");
+    const iconServices = document.getElementById("stat-card-services-icon");
+    const iconActions = document.getElementById("stat-card-actions-icon");
+    const iconCalcs = document.getElementById("stat-card-calcs-icon");
+
+    const hasData = outletCount > 0;
+    if (heroTitle && heroSubtitle) {
+      heroTitle.textContent = hasData ? "Overview" : "Welcome to CCM HUB";
+      heroSubtitle.textContent = hasData
+        ? "Overview of your outlets and recent activity."
+        : "You don't have any data yet. Start by creating an outlet or exploring services.";
+    }
+
     if (statOutlets) statOutlets.textContent = outletCount.toString();
     if (statServices) statServices.textContent = outletCount ? "3" : "0";
     if (statReports) statReports.textContent = outletCount ? "5" : "0";
     if (statCalcs) statCalcs.textContent = outletCount ? "12" : "0";
+    if (statOutletsSub) statOutletsSub.textContent = hasData ? "Outlets active" : "No data available";
+    if (statServicesSub) statServicesSub.textContent = hasData ? "Services running" : "No data available";
+    if (statReportsSub) statReportsSub.textContent = hasData ? "Actions pending" : "No data available";
+    if (statCalcsSub) statCalcsSub.textContent = hasData ? "Calculations total" : "No data available";
+
+    [iconOutlets, iconServices, iconActions, iconCalcs].forEach((iconEl) => {
+      if (!iconEl) return;
+      iconEl.classList.toggle("bg-gray-50", !hasData);
+      iconEl.classList.toggle("border-gray-200", !hasData);
+      iconEl.classList.toggle("text-gray-400", !hasData);
+    });
+
+    if (viewAllBtn) {
+      viewAllBtn.classList.toggle("bg-white", hasData);
+      viewAllBtn.classList.toggle("text-gray-800", hasData);
+      viewAllBtn.classList.toggle("cursor-not-allowed", !hasData);
+      viewAllBtn.classList.toggle("text-gray-400", !hasData);
+      viewAllBtn.disabled = !hasData;
+    }
+    if (openCalcsBtn) {
+      openCalcsBtn.disabled = !hasData;
+      openCalcsBtn.classList.toggle("cursor-not-allowed", !hasData);
+      openCalcsBtn.classList.toggle("text-gray-500", !hasData);
+      openCalcsBtn.classList.toggle("text-gray-800", hasData);
+      openCalcsBtn.classList.toggle("bg-gray-50", !hasData);
+      openCalcsBtn.classList.toggle("bg-white", hasData);
+      openCalcsBtn.classList.toggle("border-gray-200", true);
+    }
 
     const container = document.getElementById("dashboard-outlets");
     if (!container) return;
     container.innerHTML = "";
     if (!state.outlets.length) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td class="px-6 py-4 text-sm text-gray-500" colspan="4">No outlets yet. Create one to get started.</td>`;
-      container.appendChild(row);
+      const emptyRow = document.createElement("tr");
+      emptyRow.innerHTML = `
+        <td colspan="4" class="p-0">
+          <div class="w-full min-h-[320px] flex items-center justify-center bg-white">
+          <div class="w-full max-w-5xl rounded-xl border border-gray-200 bg-white flex flex-col items-center justify-center gap-4 py-12">
+              <div class="w-16 h-16 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 text-2xl">
+                <i class="fa-regular fa-building"></i>
+              </div>
+              <div class="text-center space-y-2">
+                <p class="text-lg font-semibold text-gray-900">No Outlets Yet</p>
+                <p class="text-sm text-gray-600">Get started by creating your first outlet to manage your restaurant locations.</p>
+              </div>
+              <div class="flex items-center gap-3 mt-2">
+                <button data-open-modal class="px-4 h-11 inline-flex items-center gap-2 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+                  <i class="fa-solid fa-plus"></i>
+                  Create an Outlet
+                </button>
+                <a href="help.html" class="px-4 h-11 inline-flex items-center rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white hover:bg-gray-50">Help</a>
+              </div>
+            </div>
+          </div>
+        </td>
+      `;
+      container.appendChild(emptyRow);
       return;
     }
     state.outlets.slice(-4).forEach((outlet) => {
@@ -55,7 +125,23 @@
 
     if (!outlets.length) {
       const emptyRow = document.createElement("tr");
-      emptyRow.innerHTML = `<td colspan="6" class="px-6 py-6 text-center text-gray-500">No outlets found. Add one to begin.</td>`;
+      emptyRow.innerHTML = `
+        <td colspan="6" class="px-6 py-12">
+          <div class="w-full min-h-[260px] rounded-xl border border-gray-200 bg-white flex flex-col items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 text-2xl">
+              <i class="fa-regular fa-building"></i>
+            </div>
+            <div class="text-center space-y-2">
+              <p class="text-lg font-semibold text-gray-900">No outlets found</p>
+              <p class="text-sm text-gray-600">Create a new outlet to start managing your locations.</p>
+            </div>
+            <button data-open-modal class="px-4 h-11 inline-flex items-center gap-2 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+              <i class="fa-solid fa-plus"></i>
+              Create Outlet
+            </button>
+          </div>
+        </td>
+      `;
       tbody.appendChild(emptyRow);
       if (countLabel) {
         const total = state.outlets.length;
@@ -179,7 +265,23 @@
 
     if (!calcs.length) {
       const emptyRow = document.createElement("tr");
-      emptyRow.innerHTML = `<td colspan="4" class="px-6 py-6 text-center text-gray-500">No calculations found.</td>`;
+      emptyRow.innerHTML = `
+        <td colspan="4" class="px-6 py-12">
+          <div class="w-full min-h-[260px] rounded-xl border border-gray-200 bg-white flex flex-col items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 text-2xl">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div class="text-center space-y-2">
+              <p class="text-lg font-semibold text-gray-900">No calculations available</p>
+              <p class="text-sm text-gray-600">Create your first outlet to start making calculations.</p>
+            </div>
+            <button data-open-calc-modal class="px-4 h-11 inline-flex items-center gap-2 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+              <i class="fa-solid fa-plus"></i>
+              New Calculation
+            </button>
+          </div>
+        </td>
+      `;
       tbody.appendChild(emptyRow);
       if (countLabel) {
         const total = state.calculations.length;
@@ -224,7 +326,35 @@
     const cardsWrap = document.getElementById("performance-details-cards");
     const tableWrap = document.getElementById("performance-details-table");
     const tableBody = document.getElementById("performance-table-body");
+    const emptyContainer = document.getElementById("performance-empty");
     if (!summary && !cardsWrap && !tableBody) return;
+
+    const hasPerformanceData = state.outlets.length > 0 && state.calculations.length > 0;
+
+    if (!hasPerformanceData) {
+      if (summary) summary.innerHTML = "";
+      if (cardsWrap) cardsWrap.innerHTML = "";
+      if (tableWrap) tableWrap.hidden = true;
+      if (tableBody) tableBody.innerHTML = "";
+      if (emptyContainer) {
+        emptyContainer.innerHTML = `
+          <div class="w-full min-h-[260px] rounded-xl border border-gray-200 bg-white flex flex-col items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 text-2xl">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <div class="text-center space-y-2">
+              <p class="text-lg font-semibold text-gray-900">No performance data yet</p>
+              <p class="text-sm text-gray-600">Once your outlets and services are active, you'll see performance stats here.</p>
+            </div>
+          </div>
+        `;
+        emptyContainer.hidden = false;
+      }
+      return;
+    } else if (emptyContainer) {
+      emptyContainer.hidden = true;
+      emptyContainer.innerHTML = "";
+    }
 
     if (summary) {
       const metrics = [

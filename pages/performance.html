@@ -34,8 +34,8 @@
       <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
-            <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input id="search-input" type="text" placeholder="Search..." class="w-full h-11 pl-12 pr-4 border border-gray-200 rounded-md bg-white text-gray-800 placeholder:text-gray-500 focus:ring-0 focus:border-gray-300 appearance-none" />
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
           </div>
           <div class="flex items-center gap-4">
             <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
@@ -66,11 +66,7 @@
             </div>
           </div>
 
-          <div
-            id="performance-summary"
-            class="grid gap-4"
-            style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"
-          ></div>
+          <div id="performance-summary" class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"></div>
 
           <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
             <div class="px-6 py-4 flex items-center justify-between">
@@ -104,6 +100,7 @@
                   <tbody id="performance-table-body" class="text-gray-800"></tbody>
                 </table>
               </div>
+              <div id="performance-empty" class="hidden"></div>
             </div>
           </div>
         </section>

@@ -34,8 +34,8 @@
       <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
-            <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input id="search-input" type="text" placeholder="Search..." class="w-full h-11 pl-12 pr-4 border border-gray-200 rounded-md bg-white text-gray-800 placeholder:text-gray-500 focus:ring-0 focus:border-gray-300 appearance-none" />
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
           </div>
           <div class="flex items-center gap-4">
             <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
@@ -64,7 +64,7 @@
                 <i class="fa-solid fa-chevron-down text-[11px] text-gray-500"></i>
               </button>
             </div>
-            <button class="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
+            <button type="button" data-open-calc-modal class="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow">
               <i class="fa-solid fa-plus"></i>
               New Calculation
             </button>
@@ -104,6 +104,89 @@
         </section>
       </main>
     </div>
+
+    <div id="new-calc-modal" class="hidden fixed inset-0 bg-black/55 backdrop-blur-sm flex items-center justify-center z-[9999]" style="display: none;" role="dialog" aria-modal="true">
+      <div class="bg-white w-full max-w-[900px] rounded-[18px] shadow-[0_22px_60px_rgba(0,0,0,0.25)] border border-gray-100 overflow-hidden">
+        <div class="flex items-start justify-between px-10 py-7 border-b border-gray-100">
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-900">New Calculation</h3>
+            <p class="text-sm text-gray-600 mt-1">Create a new calculation for one of your outlets.</p>
+          </div>
+          <button data-calc-close class="text-xl text-gray-400 hover:text-gray-600 px-2">×</button>
+        </div>
+
+        <div class="px-10 py-7 space-y-7">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-gray-900">Select Outlet <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <select class="appearance-none w-full h-12 rounded-lg border border-gray-200 bg-white px-3 pr-10 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#fdd42b] focus:border-[#fdd42b]">
+                <option value="">Choose an outlet...</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+            <p class="text-sm text-gray-500">You need at least one outlet to create a calculation.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="text-sm font-semibold text-gray-900">Articles <span class="text-red-500">*</span></label>
+              <button class="inline-flex items-center gap-2 px-3 h-10 rounded-lg border border-gray-200 bg-white text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                <i class="fa-solid fa-plus"></i> Add Row
+              </button>
+            </div>
+            <div class="border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+              <div class="grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr] gap-0 border-b border-gray-200 bg-white text-sm font-semibold text-gray-800">
+                <div class="px-4 py-3">Article Name</div>
+                <div class="px-4 py-3">Pieces</div>
+                <div class="px-4 py-3">Boxes</div>
+                <div class="px-4 py-3">Bottles</div>
+                <div class="px-4 py-3">Amount</div>
+              </div>
+              <div class="grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr] gap-0 bg-white">
+                <div class="px-4 py-3 border-t border-gray-200">
+                  <div class="relative">
+                    <select class="appearance-none w-full h-11 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 px-3 pr-10" disabled>
+                      <option>Select article...</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none"></i>
+                  </div>
+                </div>
+                <div class="px-4 py-3 border-t border-gray-200">
+                  <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 px-3" value="0" disabled />
+                </div>
+                <div class="px-4 py-3 border-t border-gray-200">
+                  <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 px-3" value="0" disabled />
+                </div>
+                <div class="px-4 py-3 border-t border-gray-200">
+                  <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 px-3" value="0" disabled />
+                </div>
+                <div class="px-4 py-3 border-t border-gray-200">
+                  <input class="w-full h-11 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 px-3" value="0.00" disabled />
+                </div>
+              </div>
+              <div class="grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr] gap-0 bg-white border-t border-gray-200 text-sm font-semibold text-gray-900">
+                <div class="px-4 py-3">Totals</div>
+                <div class="px-4 py-3">0</div>
+                <div class="px-4 py-3">0</div>
+                <div class="px-4 py-3">0</div>
+                <div class="px-4 py-3">0.00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-gray-900">Notes <span class="text-gray-500">(optional)</span></label>
+            <textarea rows="3" class="w-full rounded-xl border border-gray-200 bg-white text-sm text-gray-700 placeholder:text-gray-400 px-3 py-3 focus:ring-2 focus:ring-[#fdd42b] focus:border-[#fdd42b]" placeholder="Add internal notes or comments..."></textarea>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-100 px-10 py-5 flex items-center justify-between bg-white">
+          <button data-calc-cancel class="px-5 h-11 rounded-lg border border-gray-200 bg-white text-gray-800 font-semibold hover:bg-gray-50">Cancel</button>
+          <button data-calc-save class="px-5 h-11 rounded-lg bg-[#fddc7d] text-gray-900 font-semibold shadow-[0_10px_18px_rgba(253,212,43,0.35)] hover:bg-[#f3cf6f]">Save Calculation</button>
+        </div>
+      </div>
+    </div>
+
     <script src="../scripts/state.js"></script>
     <script src="../scripts/render.js"></script>
     <script src="../scripts/notifications.js"></script>

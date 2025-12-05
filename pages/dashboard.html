@@ -42,69 +42,76 @@
       <main class="flex-1 flex flex-col min-h-screen overflow-y-auto ml-64">
         <header class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between gap-4">
           <div class="relative w-full max-w-3xl">
-            <input id="search-input" type="search" placeholder="Search..." class="w-full h-11 pl-11 pr-4 border border-gray-200 rounded-md bg-white focus:ring-2 focus:ring-[#FDD42B] focus:border-[#FDD42B]" />
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search..."
+              class="w-full h-11 pl-12 pr-4 border border-gray-200 rounded-md bg-white text-gray-800 placeholder:text-gray-500 focus:ring-0 focus:border-gray-300 appearance-none"
+            />
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
           </div>
           <div class="flex items-center gap-3">
-            <button data-notification-trigger="true" class="w-10 h-10 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
+            <button data-notification-trigger="true" class="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-gray-700 relative">
               <i class="fa-regular fa-bell"></i>
+              <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#FDD42B] text-[11px] font-semibold text-gray-900 flex items-center justify-center border border-[#e6c11f]">3</span>
             </button>
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">JD</div>
+            <div class="w-10 h-10 rounded-full bg-[#e4e7ec] flex items-center justify-center text-gray-700 font-semibold">U</div>
           </div>
         </header>
 
         <section class="p-8 space-y-8 max-w-6xl w-full mx-auto">
           <div class="flex items-center justify-between">
             <div>
-              <h1 class="text-2xl font-semibold text-gray-900">Overview</h1>
-              <p class="text-gray-600 text-sm">Overview of your outlets and recent activity.</p>
+              <h1 id="dashboard-title" class="text-2xl font-semibold text-gray-900">Overview</h1>
+              <p id="dashboard-subtitle" class="text-gray-600 text-sm">Overview of your outlets and recent activity.</p>
             </div>
             <div class="hidden"></div>
           </div>
 
-          <div
-            class="grid gap-4"
-            style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"
-          >
-            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center gap-3">
-              <div class="w-11 h-11 rounded-lg bg-yellow-50 border border-yellow-100 flex items-center justify-center text-yellow-500">
-                <i class="fa-regular fa-file-lines"></i>
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-800">Recent Activity</h2>
+            <button data-open-modal class="px-4 h-10 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] shadow-sm hover:shadow inline-flex items-center gap-2">
+              <i class="fa-solid fa-plus"></i>
+              Create outlet
+            </button>
+          </div>
+
+          <div class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+              <p class="text-sm font-semibold text-gray-800">Total Outlets</p>
+              <div class="w-full h-20 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center">
+                <i class="fa-regular fa-building text-3xl text-gray-300"></i>
               </div>
-              <div>
-                <p class="text-sm text-gray-600">Total Outlets</p>
-                <p id="stat-outlets" class="text-2xl font-bold text-gray-900">0</p>
-                <p class="text-xs text-gray-500">1 outlet active</p>
-              </div>
+              <p class="text-xs text-gray-500">No data available</p>
+              <span id="stat-outlets" class="sr-only">0</span>
+              <span id="stat-outlets-sub" class="sr-only">No data available</span>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center gap-3">
-              <div class="w-11 h-11 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-500">
-                <i class="fa-solid fa-wave-square"></i>
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+              <p class="text-sm font-semibold text-gray-800">Active Services</p>
+              <div class="w-full h-20 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center">
+                <i class="fa-solid fa-wave-square text-3xl text-gray-300"></i>
               </div>
-              <div>
-                <p class="text-sm text-gray-600">Active Services</p>
-                <p id="stat-services" class="text-2xl font-bold text-gray-900">0</p>
-                <p class="text-xs text-gray-500">3 services running</p>
-              </div>
+              <p class="text-xs text-gray-500">No data available</p>
+              <span id="stat-services" class="sr-only">0</span>
+              <span id="stat-services-sub" class="sr-only">No data available</span>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center gap-3">
-              <div class="w-11 h-11 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500">
-                <i class="fa-regular fa-clipboard"></i>
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+              <p class="text-sm font-semibold text-gray-800">Pending Actions</p>
+              <div class="w-full h-20 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center">
+                <i class="fa-regular fa-clock text-3xl text-gray-300"></i>
               </div>
-              <div>
-                <p class="text-sm text-gray-600">Pending Actions</p>
-                <p id="stat-reports" class="text-2xl font-bold text-gray-900">0</p>
-                <p class="text-xs text-gray-500">5 actions pending</p>
-              </div>
+              <p class="text-xs text-gray-500">No data available</p>
+              <span id="stat-reports" class="sr-only">0</span>
+              <span id="stat-reports-sub" class="sr-only">No data available</span>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex items-center gap-3">
-              <div class="w-11 h-11 rounded-lg bg-green-50 border border-green-100 flex items-center justify-center text-green-500">
-                <i class="fa-solid fa-chart-column"></i>
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+              <p class="text-sm font-semibold text-gray-800">Latest Calculations</p>
+              <div class="w-full h-20 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center">
+                <i class="fa-regular fa-file-lines text-3xl text-gray-300"></i>
               </div>
-              <div>
-                <p class="text-sm text-gray-600">Latest Calculations</p>
-                <p id="stat-calcs" class="text-2xl font-bold text-gray-900">12</p>
-                <p class="text-xs text-gray-500">12 calculations total</p>
-              </div>
+              <p class="text-xs text-gray-500">No data available</p>
+              <span id="stat-calcs" class="sr-only">0</span>
+              <span id="stat-calcs-sub" class="sr-only">No data available</span>
             </div>
           </div>
 
@@ -112,14 +119,15 @@
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 class="text-lg font-semibold text-gray-900">Outlets</h3>
               <div class="flex items-center gap-3">
-                <a href="outlets.html" class="px-3 h-9 rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white">View All</a>
-                <button data-open-modal class="px-3 h-9 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] flex items-center gap-2">
-                  <i class="fa-solid fa-plus"></i> Add Outlet
+                <a id="dashboard-view-all" href="outlets.html" class="inline-flex items-center justify-center px-3 h-9 rounded-md border border-gray-200 text-sm font-semibold text-gray-800 bg-white">View All Outlets</a>
+                <button id="dashboard-open-calcs" class="inline-flex items-center justify-center px-3 h-9 rounded-md border border-gray-200 text-sm font-semibold text-gray-500 bg-gray-50 cursor-not-allowed" disabled>Open Calculations</button>
+                <button data-open-modal class="inline-flex items-center justify-center px-3 h-9 rounded-md bg-[#FDD42B] text-sm font-semibold text-gray-900 border border-[#e6c11f] flex items-center gap-2">
+                  <i class="fa-solid fa-plus"></i> Add New Outlet
                 </button>
               </div>
             </div>
             <div class="overflow-x-auto">
-              <table class="min-w-full text-sm">
+              <table class="min-w-full text-sm w-full">
                 <thead class="bg-gray-50 text-gray-600">
                   <tr class="text-left">
                     <th class="px-6 py-3 font-semibold">Image</th>
@@ -141,35 +149,136 @@
       </main>
     </div>
 
-    <div id="create-outlet-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" style="display: none;">
-      <div class="bg-white w-[520px] rounded-2xl shadow-2xl border border-gray-200 p-8">
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <p class="text-sm text-gray-500">New outlet</p>
-            <h3 class="text-xl font-semibold text-gray-900">Create outlet</h3>
-          </div>
-          <button id="close-create-outlet" class="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+    <div id="onboarding-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]" style="display: none;">
+      <div class="bg-white w-full rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.25)] border border-gray-100 overflow-hidden" style="max-width: 750px;">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <p id="onboard-step-label" class="text-sm font-semibold text-gray-500">Step 1 of 6</p>
+          <button id="onboard-close" class="text-xl text-gray-400 hover:text-gray-600 px-2">×</button>
         </div>
-        <form id="create-outlet-form" class="space-y-5">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-800" for="outlet-name">Outlet name</label>
-            <input id="outlet-name" required placeholder="Hans im Glück" class="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-[#FDD42B]" />
+        <div class="px-10 py-10 text-center space-y-8" id="onboard-content">
+          <div id="onboard-text" class="space-y-3">
+            <div id="onboard-leading" class="hidden"></div>
+            <h3 id="onboard-title" class="text-2xl font-semibold text-gray-900">Welcome to your CCM HUB</h3>
+            <p id="onboard-body" class="text-sm text-gray-600 max-w-3xl mx-auto leading-6">
+              Let's walk you through how everything works — outlets, services, and performance — so you can start managing your network efficiently.
+            </p>
           </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-800" for="outlet-address">Address</label>
-            <input id="outlet-address" required placeholder="Marienplatz, Munich" class="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-[#FDD42B]" />
+          <div id="onboard-visual" class="flex items-center justify-center"></div>
+          <div id="onboard-dots" class="flex items-center justify-center gap-2"></div>
+        </div>
+        <div class="px-10 py-4 border-t border-gray-100 flex items-center justify-between bg-white">
+          <div class="flex items-center gap-3">
+            <button id="onboard-back" class="px-4 h-11 rounded-lg border border-gray-200 bg-white text-gray-800 font-semibold hover:bg-gray-50 hidden">Back</button>
+            <button id="onboard-skip" class="px-4 h-11 rounded-lg border border-gray-200 bg-white text-gray-800 font-semibold hover:bg-gray-50">Skip for now</button>
           </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-800" for="outlet-campaign">Campaign</label>
-            <input id="outlet-campaign" required placeholder="Campari" class="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-[#FDD42B]" />
+          <div class="flex-1"></div>
+          <div class="flex items-center gap-3">
+            <button id="onboard-next" class="px-5 h-11 rounded-lg bg-[#FDD42B] text-gray-900 font-semibold border border-[#e6c11f] shadow-[0_10px_18px_rgba(253,212,43,0.35)] hover:bg-[#f3cf6f]">Start Guide</button>
           </div>
-          <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="button" id="cancel-create-outlet" class="px-4 h-10 rounded-lg border border-gray-300 text-gray-800">Cancel</button>
-            <button type="submit" class="px-4 h-10 rounded-lg bg-gray-900 text-white font-semibold shadow hover:bg-gray-800">Save outlet</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
+
+    <div id="create-outlet-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" style="display: none;">
+      <div class="bg-white w-full max-w-[760px] rounded-[18px] shadow-[0_18px_40px_rgba(0,0,0,0.24)] border border-gray-100 overflow-hidden">
+        <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-[#fdd42b] border border-[#e6c11f] rounded-xl flex items-center justify-center text-gray-900">
+              <i class="fa-regular fa-building text-xl"></i>
+            </div>
+            <p class="text-xl font-semibold text-gray-900">Create your first Outlet</p>
+          </div>
+          <button id="close-create-outlet" class="text-xl text-gray-400 hover:text-gray-600 px-2">×</button>
+        </div>
+
+        <form id="create-outlet-form" class="px-8 py-6 space-y-5">
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-gray-800" for="outlet-campaign">Campaign</label>
+            <div class="relative">
+              <select
+                id="outlet-campaign"
+                required
+                class="appearance-none w-full h-12 rounded-lg border border-gray-200 bg-white px-3 pr-10 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#f5d44d] focus:border-[#f5d44d]"
+              >
+                <option value="">Search and select campaign</option>
+                <option value="Campari">Campari</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-gray-800" for="outlet-name">Outlet Location</label>
+            <div class="relative">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <input
+                id="outlet-name"
+                required
+                placeholder="Search location or pin on map"
+                class="w-full h-12 pl-9 pr-3 rounded-lg border border-gray-200 bg-white text-sm text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#f5d44d] focus:border-[#f5d44d]"
+              />
+              <input id="outlet-address" type="hidden" />
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <p class="text-sm font-semibold text-gray-800">Or set location on the map</p>
+            <div
+              class="relative h-64 rounded-xl border border-gray-200 bg-white overflow-hidden"
+              style="background-image: linear-gradient(0deg, rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px); background-size: 40px 40px;"
+            >
+              <button
+                type="button"
+                class="absolute left-3 top-3 w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500"
+              >
+                <i class="fa-solid fa-location-crosshairs"></i>
+              </button>
+              <div class="absolute right-3 top-3 space-y-2">
+                <button
+                  type="button"
+                  class="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+                <button
+                  type="button"
+                  class="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500"
+                >
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+              </div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-500 pointer-events-none">
+                <i class="fa-solid fa-location-dot text-xl"></i>
+                <span class="text-sm font-semibold">Click to pin location</span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="border-t border-gray-100 px-8 py-4 bg-white">
+          <button
+            type="submit"
+            form="create-outlet-form"
+            class="w-full h-12 rounded-md bg-[#fddc7d] text-gray-800 font-semibold shadow-[0_10px_18px_rgba(253,212,43,0.28)] hover:bg-[#f3cf6f] transition-colors"
+          >
+            Create Outlet
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const nameField = document.getElementById("outlet-name");
+        const addressField = document.getElementById("outlet-address");
+        if (nameField && addressField) {
+          const sync = () => {
+            addressField.value = nameField.value;
+          };
+          sync();
+          nameField.addEventListener("input", sync);
+        }
+      })();
+    </script>
     <script src="../scripts/state.js"></script>
     <script src="../scripts/render.js"></script>
     <script src="../scripts/notifications.js"></script>

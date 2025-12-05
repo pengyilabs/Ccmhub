@@ -2,15 +2,23 @@
 (function () {
   const STORAGE_KEY = "ccmhub_state";
 
+  const sampleOutlets = [
+    { id: crypto.randomUUID(), name: "Campari", address: "Hans im Glück, Munich", campaign: "Campari" },
+  ];
+
+  const sampleCalcs = [
+    { id: "CALC-001", createdAt: "2024-11-05", articles: 12 },
+    { id: "CALC-002", createdAt: "2024-11-08", articles: 8 },
+    { id: "CALC-003", createdAt: "2024-11-10", articles: 15 },
+  ];
+
   const defaultState = {
     user: { name: "Guest", email: "guest@example.com" },
     outlets: [],
+    calculations: [],
     theme: "light",
-    calculations: [
-      { id: "CALC-001", createdAt: "2024-11-05", articles: 12 },
-      { id: "CALC-002", createdAt: "2024-11-08", articles: 8 },
-      { id: "CALC-003", createdAt: "2024-11-10", articles: 15 },
-    ],
+    seededSample: false,
+    onboardingSeen: false,
     alertsEnabled: true,
   };
 
@@ -25,6 +33,8 @@
         outlets: parsed.outlets || [],
         calculations: Array.isArray(parsed.calculations) ? parsed.calculations : defaultState.calculations,
         theme: parsed.theme || defaultState.theme,
+        seededSample: !!parsed.seededSample,
+        onboardingSeen: !!parsed.onboardingSeen,
       };
     } catch {
       return { ...defaultState };
@@ -35,12 +45,16 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
-  function seedOutlets(state) {
-    if (state.outlets.length) return state;
-    return {
-      ...state,
-      outlets: [{ id: crypto.randomUUID(), name: "Campari", address: "Hans im Glück, Munich", campaign: "Campari" }],
-    };
+  function seedSampleData(state) {
+    if (state.seededSample) return state;
+    const next = { ...state, seededSample: true };
+    if (!next.outlets.length) {
+      next.outlets = sampleOutlets;
+    }
+    if (!next.calculations.length) {
+      next.calculations = sampleCalcs;
+    }
+    return next;
   }
 
   function updateUserLabels(state) {
@@ -54,5 +68,5 @@
     if (settingsEmail) settingsEmail.textContent = state.user.email;
   }
 
-  window.CCMState = { defaultState, loadState, saveState, seedOutlets, updateUserLabels };
+  window.CCMState = { defaultState, loadState, saveState, seedSampleData, updateUserLabels };
 })();
